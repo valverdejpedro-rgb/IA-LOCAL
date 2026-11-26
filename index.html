@@ -99,7 +99,7 @@ const $=s=>document.querySelector(s);
 const store={get(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}};
 let S=Object.assign({host:'http://localhost:11434',model:'',think:false,ctx:8192,system:'',key:'',search:false,lang:'es-419'},store.get('s',{}));
 const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-let voice=false,rec=null,listening=false,useW=!SR,mstream=null,wpipe=null;
+let voice=false,rec=null,listening=false,useW=!SR||/OPR\//.test(navigator.userAgent)||!!navigator.brave,mstream=null,wpipe=null;
 let chats=store.get('c',[]),cur=null,ctrl=null;
 const esc=s=>s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
 const chat=()=>chats.find(c=>c.id===cur);
@@ -293,7 +293,7 @@ $('#ctx').onchange=e=>{S.ctx=Math.max(1024,+e.target.value||8192);save()};
 $('#sys').onchange=e=>{S.system=e.target.value;save()};
 $('#wrap').onclick=e=>{if(e.target.classList.contains('cp')){const t=e.target.nextElementSibling.textContent;navigator.clipboard.writeText(t).then(()=>{e.target.textContent='Copiado';setTimeout(()=>e.target.textContent='Copiar',1200)})}};
 
-const VERSION='1.0.1';
+const VERSION='1.1.1';
 $('#ver').textContent='Versión '+VERSION;
 $('#vo').onclick=voiceToggle;
 $('#key').onchange=e=>{S.key=e.target.value.trim();save()};
